@@ -1,0 +1,192 @@
+<!-- ======================================================
+	The Barrett WAM 4 DoF setup as in the IAS Lab @ TU Darmstadt
+
+	Last edits 	: 18Dec'19
+====================================================== -->
+
+<mujoco model="wam_4dof">
+    <option integrator="Euler" timestep="0.0005" gravity="0 0 -9.81"/>
+    <compiler coordinate="local" angle="radian" meshdir="meshes/"/>
+    <default>
+        <joint type="hinge" limited="true" pos="0 0 0" axis="0 0 1" frictionloss="0.1"/>
+        <site size=".02" rgba="1 0 0 0"/>
+        <default class="viz">
+            <geom type="mesh" contype="0" conaffinity="0" group="2" rgba="0.7 0.7 0.7 1" density="0"/>
+        </default>
+        <default class="col">
+            <geom type="mesh" contype="0" conaffinity="1" group="3" rgba="0.5 0.6 0.7 1" density="0"/>
+        </default>
+
+        <!-- Something is wrong with those visualizations e.g. when rendering them via the mujoco-py
+          render funcs this results in a left handed coordinate system. -->
+        <default class="x_axis">
+            <geom contype="0" conaffinity="0" group="1" rgba="1 0 0 1"
+                  type="cylinder" size=".01 0.15" fromto="0 0 0 0.3 0 0"/>
+        </default>
+        <default class="y_axis">
+            <geom contype="0" conaffinity="0" group="1" rgba="0 1 0 1"
+                  type="cylinder" size=".01 0.15" fromto="0 0 0 0 0.3 0"/>
+        </default>
+        <default class="z_axis">
+            <geom contype="0" conaffinity="0" group="1" rgba="0 0 1 1"
+                  type="cylinder" size=".01 0.15" fromto="0 0 0 0 0 0.3"/>
+          </default>
+    </default>
+
+    <asset>
+        <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.25 0.26 0.25" rgb2="0.22 0.22 0.22"
+                 markrgb="0.3 0.3 0.3" width="100" height="100"/>
+        <material name="MatGnd" texture="groundplane" texrepeat="5 5" specular="1" shininess="0.3" reflectance="1e-05"/>
+        <mesh file="base_link_fine.stl"/>
+        <mesh file="base_link_convex.stl"/>
+        <mesh file="shoulder_link_fine.stl"/>
+        <mesh file="shoulder_link_convex_decomposition_p1.stl"/>
+        <mesh file="shoulder_link_convex_decomposition_p2.stl"/>
+        <mesh file="shoulder_link_convex_decomposition_p3.stl"/>
+        <mesh file="shoulder_pitch_link_fine.stl"/>
+        <mesh file="shoulder_pitch_link_convex.stl"/>
+        <mesh file="upper_arm_link_fine.stl"/>
+        <mesh file="upper_arm_link_convex_decomposition_p1.stl"/>
+        <mesh file="upper_arm_link_convex_decomposition_p2.stl"/>
+        <mesh file="elbow_link_fine.stl"/>
+        <mesh file="elbow_link_convex.stl"/>
+        <mesh file="wrist_palm_link_fine.stl"/>
+        <mesh name="cup" file="cup_cylinder/cup.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="cup1" file="cup_cylinder/cup_split1.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="cup2" file="cup_cylinder/cup_split2.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="cup3" file="cup_cylinder/cup_split3.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="cup4" file="cup_cylinder/cup_split4.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="cup5" file="cup_cylinder/cup_split5.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="cup6" file="cup_cylinder/cup_split6.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="cup7" file="cup_cylinder/cup_split7.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="cup8" file="cup_cylinder/cup_split8.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="cup9" file="cup_cylinder/cup_split9.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="cup10" file="cup_cylinder/cup_split10.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="cup11" file="cup_cylinder/cup_split11.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="cup12" file="cup_cylinder/cup_split12.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="cup13" file="cup_cylinder/cup_split13.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="cup14" file="cup_cylinder/cup_split14.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="cup15" file="cup_cylinder/cup_split15.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="cup16" file="cup_cylinder/cup_split16.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="cup17" file="cup_cylinder/cup_split17.stl" scale="0.001 0.001 0.001"/>
+        <mesh name="cup18" file="cup_cylinder/cup_split18.stl" scale="0.001 0.001 0.001"/>
+    </asset>
+
+    <worldbody>
+        <geom name="ground" size="1.5 2 1" type="plane" material="MatGnd"/>
+        <light pos="0.1 0.2 1.3" dir="-0.0758098 -0.32162 -0.985527" directional="true" cutoff="60" exponent="1"
+               diffuse="1 1 1" specular="0.1 0.1 0.1"/>
+
+        <body name="wam4/base_link" pos="0 0 0.6" euler="0 0 1.57">
+            <inertial pos="6.93764e-06 0.0542887 0.076438" quat="0.496481 0.503509 -0.503703 0.496255" mass="27.5544"
+                      diaginertia="0.432537 0.318732 0.219528"/>
+            <geom class="viz" mesh="base_link_fine" rgba="0.78 0.75 0.7 1" euler="0 0 -1.57"/>
+            <geom class="col" mesh="base_link_convex" name="base_link_convex_geom" euler="0 0 -1.57"/>
+
+            <body name="links/shoulder_yaw" pos="0 0 0.160" euler="0 0 -1.57">
+                <inertial pos="-0.00443422 -0.00066489 0.03810961" mass="10.76768767"
+                          fullinertia="0.13488033 0.11328369 0.11328369 0.00012485 -0.00213041 0.00068555"/>
+                <site name="sites/shoulder_yaw" pos="-0.00443422 -0.00066489 0.03810961"/>
+                <joint name="joints/shoulder_yaw" range="-2.6 2.6"/>
+                <geom class="viz" mesh="shoulder_link_fine" pos="0 0 0.186" rgba="0.78 0.75 0.7 1"/>
+                <geom class="col" mesh="shoulder_link_convex_decomposition_p1"
+                      name="shoulder_link_convex_decomposition_p1_geom" pos="0 0 0.186"/>
+                <geom class="col" mesh="shoulder_link_convex_decomposition_p2"
+                      name="shoulder_link_convex_decomposition_p2_geom" pos="0 0 0.186"/>
+                <geom class="col" mesh="shoulder_link_convex_decomposition_p3"
+                      name="shoulder_link_convex_decomposition_p3_geom" pos="0 0 0.186"/>
+
+                <body name="links/shoulder_pitch" pos="0 0 0.184" quat="0.707107 -0.707107 0 0">
+                    <inertial pos="-0.00236983 -0.01542114 0.03105614" mass="3.87493756"
+                              fullinertia="0.02140958 0.01558906 0.01377875 0.00002461 -0.00027172 -0.00181920"/>
+                    <site name="sites/shoulder_pitch" pos="-0.00236983 -0.01542114 0.03105614"/>
+                    <joint name="joints/shoulder_pitch" range="-1.985 1.985"/>
+                    <geom class="viz" mesh="shoulder_pitch_link_fine" rgba="0.6 0.6 0.6 1"/>
+                    <geom class="col" mesh="shoulder_pitch_link_convex" name="shoulder_pitch_link_convex_geom"/>
+
+                    <body name="links/upper_arm" pos="0 -0.505 0" quat="0.707107 0.707107 0 0">
+                        <inertial pos="0.03825858 0.00003309 -0.20750770" mass="1.80228141"
+                                  fullinertia="0.06276039 0.06656967 0.00689512 -0.00000738 -0.00614574 -0.00001767"/>
+                        <site name="sites/upper_arm" pos="0.03825858 0.00003309 -0.20750770"/>
+                        <joint name="joint/shoulder_roll" range="-2.8 2.8"/>
+                        <geom class="viz" mesh="upper_arm_link_fine" pos="0 0 -0.505" rgba=".25 .25 .25 1"/>
+                        <geom class="col" mesh="upper_arm_link_convex_decomposition_p1"
+                              name="upper_arm_link_convex_decomposition_p1_geom" pos="0 0 -0.505"/>
+                        <geom class="col" mesh="upper_arm_link_convex_decomposition_p2"
+                              name="upper_arm_link_convex_decomposition_p2_geom" pos="0 0 -0.505"/>
+
+                        <body name="links/forearm" pos="0.045 0 0.045" quat="0.707107 -0.707107 0 0">
+                            <inertial pos="-0.03404529 -0.14053900 -0.00022942" mass="1.06513649"
+                                      fullinertia="0.01848577 0.0045 0.01968956 -0.00150604 -0.00001741 -0.00002109"/>
+                            <site name="sites/forearm" pos="-0.03404529 -0.14053900 -0.00022942"/>
+
+                            <joint name="joint/elbow_pitch" range="-0.9 3.14159"/>
+                            <geom class="viz" mesh="elbow_link_fine" rgba="0.85 0.85 0.85 1"/>
+                            <geom class="col" mesh="elbow_link_convex" name="elbow_link_convex_geom"/>
+                            <geom class="viz" type="cylinder" size=".0445 0.136" pos="-.045 -0.214 0" euler="1.57 0 0"
+                                  rgba=".25 .25 .25 1"/>
+                            <geom class="col" type="cylinder" size=".0445 0.136" pos="-.045 -0.214 0" euler="1.57 0 0"
+                                  name="elbow_link_cylinder_geom"/>
+
+                            <body name="links/tool_base_wo_plate" pos="-.045 -0.35 0" quat="0.707107 0.707107 0 0">
+                                <geom class="viz" mesh="wrist_palm_link_fine" pos="0 0 -0.06" rgba="0.85 0.85 0.85 1"/>
+                                <body name="links/tool_base_w_plate" pos="0 0 0.008" euler="0 0 1.57">
+                                    <body name="cup" pos="0 0 0" euler="0 0 0">
+                                        <inertial pos="-3.75236e-10 8.27811e-05 0.0947015"
+                                                  quat="0.999945 -0.0104888 0 0" mass="0.132"
+                                                  diaginertia="0.000285643 0.000270485 9.65696e-05"/>
+                                        <geom name="cup_geom1" pos="0 0.05 0.055" euler="-1.57 0 0" solref="-10000 -100"
+                                              type="mesh" mesh="cup1"/>
+                                        <geom name="cup_geom2" pos="0 0.05 0.055" euler="-1.57 0 0" solref="-10000 -100"
+                                              type="mesh" mesh="cup2"/>
+                                        <geom name="cup_geom3" pos="0 0.05 0.055" euler="-1.57 0 0" solref="-10000 -100"
+                                              type="mesh" mesh="cup3" rgba="0.7 0.7 0.7 0.4"/>
+                                        <geom name="cup_geom4" pos="0 0.05 0.055" euler="-1.57 0 0" solref="-10000 -100"
+                                              type="mesh" mesh="cup4" rgba="0.7 0.7 0.7 0.4"/>
+                                        <geom name="cup_geom5" pos="0 0.05 0.055" euler="-1.57 0 0" solref="-10000 -100"
+                                              type="mesh" mesh="cup5" rgba="0.7 0.7 0.7 0.4"/>
+                                        <geom name="cup_geom6" pos="0 0.05 0.055" euler="-1.57 0 0" solref="-10000 -100"
+                                              type="mesh" mesh="cup6" rgba="0.7 0.7 0.7 0.4"/>
+                                        <geom name="cup_geom7" pos="0 0.05 0.055" euler="-1.57 0 0" solref="-10000 -100"
+                                              type="mesh" mesh="cup7" rgba="0.7 0.7 0.7 0.4"/>
+                                        <geom name="cup_geom8" pos="0 0.05 0.055" euler="-1.57 0 0" solref="-10000 -100"
+                                              type="mesh" mesh="cup8" rgba="0.7 0.7 0.7 0.4"/>
+                                        <geom name="cup_geom9" pos="0 0.05 0.055" euler="-1.57 0 0" solref="-10000 -100"
+                                              type="mesh" mesh="cup9" rgba="0.7 0.7 0.7 0.4"/>
+                                        <geom name="cup_geom10" pos="0 0.05 0.055" euler="-1.57 0 0" solref="-10000 -100"
+                                              type="mesh" mesh="cup10" rgba="0.7 0.7 0.7 0.4"/>
+                                        <geom name="cup_geom11" pos="0 0.05 0.055" euler="-1.57 0 0" solref="-10000 -100"
+                                              type="mesh" mesh="cup11" rgba="0.7 0.7 0.7 0.4"/>
+                                        <geom name="cup_geom12" pos="0 0.05 0.055" euler="-1.57 0 0" solref="-10000 -100"
+                                              type="mesh" mesh="cup12" rgba="0.7 0.7 0.7 0.4"/>
+                                        <geom name="cup_geom13" pos="0 0.05 0.055" euler="-1.57 0 0" solref="-10000 -100"
+                                              type="mesh" mesh="cup13" rgba="0.7 0.7 0.7 0.4"/>
+                                        <geom name="cup_geom14" pos="0 0.05 0.055" euler="-1.57 0 0" solref="-10000 -100"
+                                              type="mesh" mesh="cup14" rgba="0.7 0.7 0.7 0.4"/>
+                                        <geom name="cup_geom15" pos="0 0.05 0.055" euler="-1.57 0 0" solref="-10000 -100"
+                                              type="mesh" mesh="cup15" rgba="0.7 0.7 0.7 0.4"/>
+                                        <geom name="cup_geom16" pos="0 0.05 0.055" euler="-1.57 0 0" solref="-10000 -100"
+                                              type="mesh" mesh="cup16" rgba="0.7 0.7 0.7 0.4"/>
+                                        <geom name="cup_geom17" pos="0 0.05 0.055" euler="-1.57 0 0" solref="-10000 -100"
+                                              type="mesh" mesh="cup17" rgba="0.7 0.7 0.7 0.4"/>
+                                        <geom name="cup_geom18" pos="0 0.05 0.055" euler="-1.57 0 0" solref="-10000 -100"
+                                              type="mesh" mesh="cup18" rgba="0.7 0.7 0.7 0.4"/>
+
+                                        <site name="cup_goal" pos="0 0.05 0.1165"/>
+                                        <site name="cup_center_top" pos="0 0.05 0.1165"/>
+                                        <site name="cup_goal_final" pos="0 -0.03 0.1165"/>
+                                        <site name="cup_center_bottom" pos="0 -0.03 0.1165"/>
+                                    </body>
+                                </body>
+                            </body>
+                        </body>
+                    </body>
+                </body>
+            </body>
+        </body>
+
+        <camera name="visualization" mode="targetbody" target="wam4/base_link" pos="-2. 0.5 3."/>
+        <camera name="experiment" mode="fixed" euler="1. 0. 3.14" pos="0.5 -1.6 2.2"/>
+    </worldbody>
+
+</mujoco>

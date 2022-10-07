@@ -1,0 +1,3 @@
+[submodule "mpc/mj_envs"]
+	path = mpc/mj_envs
+	url = git@github.com:JoeMWatson/mj_envs.git

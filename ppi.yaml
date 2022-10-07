@@ -1,0 +1,30 @@
+name: ppi
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - dill=0.3.4
+  - ffmpeg=5.0.0
+  - imageio-ffmpeg=0.4.5
+  - matplotlib=3.5.1
+  - numpy=1.21.5
+  - pillow=9.1.0
+  - pip=22.0.4
+  - python=3.7.12
+  - scikit-learn=1.0.2
+  - scipy=1.7.3
+  - tqdm=4.63.1
+  - wheel=0.37.1
+  - pyyaml
+  - pip:
+      - click==8.1.1
+      - cloudpickle==1.2.2
+      - colorednoise==2.0.0
+      - git+https://github.com/denisyarats/dmc2gym.git
+      - gif==3.0.0
+      - glfw==1.12.0
+      - gym==0.13.0
+      - imageio==2.16.1
+      - git+https://github.com/aravindr93/mjrl.git
+      - mujoco-py==2.0.2.13
+      - Pillow==9.1.0

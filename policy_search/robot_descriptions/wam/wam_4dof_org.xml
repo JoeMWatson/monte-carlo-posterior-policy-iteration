@@ -1,0 +1,145 @@
+<!-- ======================================================
+	The Barrett WAM 4 DoF setup as in the IAS Lab @ TU Darmstadt
+
+	Last edits 	: 18Dec'19
+====================================================== -->
+
+<mujoco model="wam_4dof">
+    <option integrator="Euler" timestep="0.002"/>
+    <compiler coordinate="local" angle="radian" meshdir="meshes/"/>
+    <default>
+        <joint type="hinge" limited="true" pos="0 0 0" axis="0 0 1" frictionloss="0.1"/>
+        <site size=".02" rgba="1 0 0 0"/>
+        <default class="viz">
+            <geom type="mesh" contype="0" conaffinity="0" group="2" rgba="0.7 0.7 0.7 1" density="0"/>
+        </default>
+        <default class="col">
+            <geom type="mesh" contype="0" conaffinity="1" group="3" rgba="0.5 0.6 0.7 1" density="0"/>
+        </default>
+        <default class="x_axis">
+            <geom contype="0" conaffinity="0" group="1" rgba="1 0 0 1"
+                  type="cylinder" size=".01 0.15" pos="0.15 0 0" euler="0 1.57 0"/>
+        </default>
+        <default class="y_axis">
+            <geom contype="0" conaffinity="0" group="1" rgba="0 1 0 1"
+                  type="cylinder" size=".01 0.15" pos="0 0.15 0" euler="1.57 0 0"/>
+        </default>
+        <default class="z_axis">
+            <geom contype="0" conaffinity="0" group="1" rgba="0 0 1 1"
+                  type="cylinder" size=".01 0.15" pos="0 0 0.15" euler="0 0 0"/>
+        </default>
+    </default>
+
+    <asset>
+        <mesh file="base_link_fine.stl"/>
+        <mesh file="base_link_convex.stl"/>
+        <mesh file="shoulder_link_fine.stl"/>
+        <mesh file="shoulder_link_convex_decomposition_p1.stl"/>
+        <mesh file="shoulder_link_convex_decomposition_p2.stl"/>
+        <mesh file="shoulder_link_convex_decomposition_p3.stl"/>
+        <mesh file="shoulder_pitch_link_fine.stl"/>
+        <mesh file="shoulder_pitch_link_convex.stl"/>
+        <mesh file="upper_arm_link_fine.stl"/>
+        <mesh file="upper_arm_link_convex_decomposition_p1.stl"/>
+        <mesh file="upper_arm_link_convex_decomposition_p2.stl"/>
+        <mesh file="elbow_link_fine.stl"/>
+        <mesh file="elbow_link_convex.stl"/>
+        <mesh file="wrist_palm_link_fine.stl"/>
+
+        <texture name="groundplane" type="2d" builtin="checker" rgb1=".25 .26 .25"
+                 rgb2=".22 .22 .22" width="100" height="100" mark="edge" markrgb=".3 .3 .3"/>
+        <material name="MatGnd" texture="groundplane" texrepeat="5 5" specular="1" shininess=".3"
+                  reflectance="0.00001"/>
+        <texture name="texplane" type="2d" builtin="checker" rgb1=".2 .3 .4" rgb2=".1 0.15 0.2" width="512"
+                 height="512" mark="cross" markrgb=".8 .8 .8"/>
+        <material name="matplane" reflectance="0.3" texture="texplane" texrepeat="1 1" texuniform="true"/>
+    </asset>
+
+    <worldbody>
+        <light directional="false" diffuse=".2 .2 .2" specular="0 0 0" pos="0 0 5" dir="0 0 -1" castshadow="false"/>
+        <light mode="targetbodycom" target="wam4/base_link" directional="false" diffuse="2 2 2" specular="0.3 0.3 0.3" pos="0 0 4.0" dir="0 0 -1"/>
+        <geom name="floor" pos="0 0 0" size="2 2 .25" type="plane" material="matplane" condim="3" solref="-16000 -200"/>
+
+        <geom class="x_axis"/>
+        <geom class="y_axis"/>
+        <geom class="z_axis"/>
+
+
+        <body name="wam4/base_link" pos="0 0 0.84" euler="0 0 1.57">
+            <geom class="x_axis"/>
+            <geom class="y_axis"/>
+            <geom class="z_axis"/>
+            <geom class="viz" mesh="base_link_fine" rgba="0.78 0.75 0.7 1" euler="0 0 -1.57"/>
+            <geom class="col" mesh="base_link_convex" euler="0 0 -1.57"/>
+
+            <body name="links/shoulder_yaw" pos="0 0 0.160" euler="0 0 -1.57">
+<!--                <geom class="x_axis"/>-->
+<!--                <geom class="y_axis"/>-->
+<!--                <geom class="z_axis"/>-->
+                <inertial pos="-0.00443422 -0.00066489 0.03810961" mass="10.76768767" fullinertia="0.13488033 0.11328369 0.11328369 0.00012485 -0.00213041 0.00068555" />
+                <site name="sites/shoulder_yaw" pos="-0.00443422 -0.00066489 0.03810961"/>
+                <joint name="joints/shoulder_yaw" range="-2.6 2.6" />
+                <geom class="viz" mesh="shoulder_link_fine" pos="0 0 0.186" rgba="0.78 0.75 0.7 1"/>
+                <geom class="col" mesh="shoulder_link_convex_decomposition_p1" pos="0 0 0.186"/>
+                <geom class="col" mesh="shoulder_link_convex_decomposition_p2" pos="0 0 0.186"/>
+                <geom class="col" mesh="shoulder_link_convex_decomposition_p3" pos="0 0 0.186"/>
+
+                <body name="links/shoulder_pitch" pos="0 0 0.184" quat="0.707107 -0.707107 0 0">
+<!--                    <geom class="x_axis"/>-->
+<!--                    <geom class="y_axis"/>-->
+<!--                    <geom class="z_axis"/>-->
+                    <inertial pos="-0.00236983 -0.01542114 0.03105614" mass="3.87493756" fullinertia="0.02140958 0.01558906 0.01377875 0.00002461 -0.00027172 -0.00181920" />
+                    <site name="sites/shoulder_pitch" pos="-0.00236983 -0.01542114 0.03105614"/>
+                    <joint name="joints/shoulder_pitch" range="-1.985 1.985"/>
+                    <geom class="viz" mesh="shoulder_pitch_link_fine" rgba="0.6 0.6 0.6 1"/>
+                    <geom class="col" mesh="shoulder_pitch_link_convex"/>
+
+                    <body name="links/upper_arm" pos="0 -0.505 0" quat="0.707107 0.707107 0 0">
+<!--                        <geom class="x_axis"/>-->
+<!--                        <geom class="y_axis"/>-->
+<!--                        <geom class="z_axis"/>-->
+                        <inertial pos="0.03825858 0.00003309 -0.20750770" mass="1.80228141" fullinertia="0.06276039 0.06656967 0.00689512 -0.00000738 -0.00614574 -0.00001767" />
+                        <site name="sites/upper_arm" pos="0.03825858 0.00003309 -0.20750770"/>
+                        <joint name="joint/shoulder_roll" range="-2.8 2.8" />
+                        <geom class="viz" mesh="upper_arm_link_fine" pos="0 0 -0.505" rgba=".25 .25 .25 1"/>
+                        <geom class="col" mesh="upper_arm_link_convex_decomposition_p1" pos="0 0 -0.505"/>
+                        <geom class="col" mesh="upper_arm_link_convex_decomposition_p2" pos="0 0 -0.505"/>
+
+                        <body name="links/forearm" pos="0.045 0 0.045" quat="0.707107 -0.707107 0 0">
+<!--                            <geom class="x_axis"/>-->
+<!--                            <geom class="y_axis"/>-->
+<!--                            <geom class="z_axis"/>-->
+                            <inertial pos="-0.03404529 -0.14053900 -0.00022942" mass="1.06513649" fullinertia="0.01848577 0.0045 0.01968956 -0.00150604 -0.00001741 -0.00002109" />
+                            <site name="sites/forearm" pos="-0.03404529 -0.14053900 -0.00022942"/>
+                            <joint name="joint/elbow_pitch" range="-0.9 3.14159" />
+                            <geom class="viz" mesh="elbow_link_fine" rgba="0.85 0.85 0.85 1"/>
+                            <geom class="col" mesh="elbow_link_convex"/>
+                            <geom class="viz" type="cylinder" size=".0445 0.136" pos="-.045 -0.214 0" euler="1.57 0 0" rgba=".25 .25 .25 1"/>
+                            <geom class="col" type="cylinder" size=".0445 0.136" pos="-.045 -0.214 0" euler="1.57 0 0"/>
+
+                            <body name="links/tool_base_wo_plate" pos="-.045 -0.35 0" quat="0.707107 0.707107 0 0">
+                                <geom class="viz" mesh="wrist_palm_link_fine" pos="0 0 -0.06" rgba="0.85 0.85 0.85 1"/>
+<!--                                <geom class="x_axis"/>-->
+<!--                                <geom class="y_axis"/>-->
+<!--                                <geom class="z_axis"/>-->
+
+                                <body name="links/tool_base_w_plate" pos="0 0 0.008" euler="0 0 1.57">
+<!--                                    <geom class="x_axis"/>-->
+<!--                                    <geom class="y_axis"/>-->
+<!--                                    <geom class="z_axis"/>-->
+
+                                </body>
+                            </body>
+                        </body>
+                    </body>
+                </body>
+            </body>
+        </body>
+
+        <body name="endeff_des" pos="0 0 0.84" mocap="true">
+            <geom class="viz" type="sphere" size="0.01" rgba="1 0 0 0.3" />
+        </body>
+
+    </worldbody>
+
+</mujoco>

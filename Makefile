@@ -5,10 +5,6 @@ install:
 	git submodule update --init --recursive
 	cd mpc/mj_envs && pip install -e .
 
-tidy:
-	black .
-	isort . --profile black
-
 run_optimization:
 	python optimization/run_opt.py Reps NoisySphere --dimension 20 mc --n-samples 100
 
@@ -24,6 +20,4 @@ run_mpc_smooth_kernel:
 run_mpc_features:
 	python run_mpc.py Essps hammer-v0 RffFeatures --n-elites 10 --dir _reviewer_results MonteCarlo --n-samples 64
 
-mpc_smoketest:
-	python run_mpc.py Cem door-v0 WhiteNoiseIid --no-plots --dir _del --timesteps 5 --n-warmstart-iters 5 MonteCarlo --n-samples 5
 

@@ -57,6 +57,7 @@ Installation is documented in the `install` target of the `Makefile`
 	conda env create -n ppi --file ppi.yaml
 	conda activate ppi
 	pip install -e .
+	git submodule update --init --recursive
 	cd mpc/mj_envs && pip install -e .
 ```
 
